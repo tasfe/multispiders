@@ -1,0 +1,9 @@
+F:\multispiders\blogcrawler\blogcrawler\bin\Debug\blogcrawler.exe.config
+F:\multispiders\blogcrawler\blogcrawler\bin\Debug\blogcrawler.exe
+F:\multispiders\blogcrawler\blogcrawler\bin\Debug\blogcrawler.pdb
+F:\multispiders\blogcrawler\blogcrawler\obj\Debug\blogcrawler.csprojResolveAssemblyReference.cache
+F:\multispiders\blogcrawler\blogcrawler\obj\Debug\blogcrawler.Form1.resources
+F:\multispiders\blogcrawler\blogcrawler\obj\Debug\blogcrawler.Properties.Resources.resources
+F:\multispiders\blogcrawler\blogcrawler\obj\Debug\blogcrawler.csproj.GenerateResource.Cache
+F:\multispiders\blogcrawler\blogcrawler\obj\Debug\blogcrawler.exe
+F:\multispiders\blogcrawler\blogcrawler\obj\Debug\blogcrawler.pdb
