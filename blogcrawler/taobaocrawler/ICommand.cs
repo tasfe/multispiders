@@ -6,11 +6,8 @@ using System.Threading.Tasks;
 
 namespace taobaocrawler
 {
-    class Program
+    public interface ICommand
     {
-        static void Main(string[] args)
-        {
 
-        }
     }
 }

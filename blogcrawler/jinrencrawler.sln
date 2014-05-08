@@ -3,7 +3,31 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 2013
 VisualStudioVersion = 12.0.21005.1
 MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "crawler.engine", "crawler.engine\crawler.engine.csproj", "{9059109D-0794-4B52-8A76-D7BAD4B32895}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "taobaocrawler", "taobaocrawler\taobaocrawler.csproj", "{275A662D-1A2C-4FF6-9FD6-ACC2E8FACA47}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "crawler.test", "crawler.test\crawler.test.csproj", "{8733D93C-6D9B-47CF-8D6B-51D970FD3AEC}"
+EndProject
 Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{9059109D-0794-4B52-8A76-D7BAD4B32895}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{9059109D-0794-4B52-8A76-D7BAD4B32895}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{9059109D-0794-4B52-8A76-D7BAD4B32895}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{9059109D-0794-4B52-8A76-D7BAD4B32895}.Release|Any CPU.Build.0 = Release|Any CPU
+		{275A662D-1A2C-4FF6-9FD6-ACC2E8FACA47}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{275A662D-1A2C-4FF6-9FD6-ACC2E8FACA47}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{275A662D-1A2C-4FF6-9FD6-ACC2E8FACA47}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{275A662D-1A2C-4FF6-9FD6-ACC2E8FACA47}.Release|Any CPU.Build.0 = Release|Any CPU
+		{8733D93C-6D9B-47CF-8D6B-51D970FD3AEC}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{8733D93C-6D9B-47CF-8D6B-51D970FD3AEC}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{8733D93C-6D9B-47CF-8D6B-51D970FD3AEC}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{8733D93C-6D9B-47CF-8D6B-51D970FD3AEC}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
 	EndGlobalSection
