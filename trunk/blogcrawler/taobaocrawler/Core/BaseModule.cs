@@ -22,7 +22,9 @@ namespace TaobaoCrawler
             get { return _SubModules; }
         }
 
-        List<ICommand> _Commands = new List<ICommand>();
+        //暂时用大街口方式
+        List<ICommand> _Commands = 
+            new List<ICommand>();
         /// <summary>
         /// 
         /// </summary>

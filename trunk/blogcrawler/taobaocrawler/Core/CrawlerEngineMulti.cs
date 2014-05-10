@@ -13,8 +13,8 @@ namespace TaobaoCrawler
     /// <summary>
     /// 多线程采集引擎
     /// </summary>
-    class CrawlerEngineMulti : ICrawlerEngine<ICommandContext<IRequestToken>, IUserRequestInfo,IRequestToken>,
-        IAsyCrawlerEngine<ICommandContext<IRequestToken>, IUserRequestInfo, IRequestToken>
+    class CrawlerEngineMulti : ICrawlerEngine<BaseCommandContext<IRequestToken>,IUserRequestInfo,IRequestToken>,
+        IAsyCrawlerEngine<BaseCommandContext<IRequestToken>, IUserRequestInfo, IRequestToken>
     {
         private static object _synLock = new object();
 
@@ -39,8 +39,8 @@ namespace TaobaoCrawler
         /// <summary>
         /// 请求队列
         /// </summary>
-        private Queue<Tuple<ICommandContext<IRequestToken>, IUserRequestInfo>> _requestQueue =
-            new Queue<Tuple<ICommandContext<IRequestToken>, IUserRequestInfo>>();
+        private Queue<Tuple<BaseCommandContext<IRequestToken>, IUserRequestInfo>> _requestQueue =
+            new Queue<Tuple<BaseCommandContext<IRequestToken>, IUserRequestInfo>>();
 
         private object _synWorkLock = new object();
 
@@ -72,12 +72,12 @@ namespace TaobaoCrawler
         /// </summary>
         /// <param name="context"></param>
         /// <param name="request"></param>
-        public virtual IRequestToken OnWork(ICommandContext<IRequestToken> context, IUserRequestInfo request)
+        public virtual IRequestToken OnWork(BaseCommandContext<IRequestToken> context, IUserRequestInfo request)
         {
             long id = IdManager.Hinstance.New(IdType.USER_REQUEST_ID);
             context.Token = new RequestToken(id);
             //开始排队等候
-            _requestQueue.Enqueue(new Tuple<ICommandContext<IRequestToken>, IUserRequestInfo>(context, request));
+            _requestQueue.Enqueue(new Tuple<BaseCommandContext<IRequestToken>, IUserRequestInfo>(context, request));
             return context.Token;
         }
 
@@ -134,15 +134,15 @@ namespace TaobaoCrawler
         #region 用户请求线程处理事件
         private void UserRequestWork_DoWork(object sender, DoWorkEventArgs e)
         {
-            Tuple<ICommand<ICommandContext<IRequestToken>, IUserRequestInfo>,
-                            ICommandContext<IRequestToken>, IUserRequestInfo> pair = e.Argument as
-                Tuple<ICommand<ICommandContext<IRequestToken>, IUserRequestInfo>,
-                            ICommandContext<IRequestToken>, IUserRequestInfo>;
+            Tuple<ICommand<BaseCommandContext<IRequestToken>, IUserRequestInfo>,
+                            BaseCommandContext<IRequestToken>, IUserRequestInfo> pair = e.Argument as
+                Tuple<ICommand<BaseCommandContext<IRequestToken>, IUserRequestInfo>,
+                            BaseCommandContext<IRequestToken>, IUserRequestInfo>;
 
             if(pair != null)
             {
-                ICommand<ICommandContext<IRequestToken>, IUserRequestInfo> command = pair.Item1;
-                ICommandContext<IRequestToken> commandContext = pair.Item2;
+                ICommand<BaseCommandContext<IRequestToken>, IUserRequestInfo> command = pair.Item1;
+                BaseCommandContext<IRequestToken> commandContext = pair.Item2;
                 IUserRequestInfo userRequest = pair.Item3;
                 if(command != null)
                 {
@@ -157,7 +157,7 @@ namespace TaobaoCrawler
 
         private void UserRequestWork_RunWorkerCompleted(object sender, RunWorkerCompletedEventArgs e)
         {
-            IRequestToken token = e.Result as IRequestToken;
+            RequestToken token = e.Result as RequestToken;
             if(token != null)
             {
                 lock(_synWorkLock)
@@ -175,31 +175,30 @@ namespace TaobaoCrawler
         {
             ConsoleExt.WriteLine("主线程启动...");
 
+            IEnumerable<ICommand<BaseCommandContext<IRequestToken>, IUserRequestInfo>> commands = GetInitCommands();
+
             while(true)
             {
                 Thread.Sleep(_loopTimes * 1000);
                 if(_requestQueue.Count>0)
                 {
-                    Tuple<ICommandContext<IRequestToken>, IUserRequestInfo> pair = _requestQueue.Dequeue();
+                    Tuple<BaseCommandContext<IRequestToken>, IUserRequestInfo> pair = _requestQueue.Peek();
 
-                    IEnumerable<ICommand<ICommandContext<IRequestToken>, IUserRequestInfo>> commands = GetInitCommands();
-                    foreach(ICommand<ICommandContext<IRequestToken>, IUserRequestInfo> cmd in commands)
-                    {
-
-                    }
-                    //
-                    foreach (ICommand<ICommandContext<IRequestToken>, IUserRequestInfo> command in commands)
+                    List<ICommand<BaseCommandContext<IRequestToken>, IUserRequestInfo>> lstCommands = 
+                        commands.ToList<ICommand<BaseCommandContext<IRequestToken>, IUserRequestInfo>>();
+                    foreach (ICommand<BaseCommandContext<IRequestToken>, IUserRequestInfo> command in commands)
                     {
                         if (command.Name == pair.Item1.RequestId)
                         {
+                            _requestQueue.Dequeue();
                             ConsoleExt.WriteLine("启动抓取线程 Token: {0}...",command.Name);
                             //另外起一根线程去处理
                             BackgroundWorker worker = new BackgroundWorker();
                             worker.DoWork += UserRequestWork_DoWork;
                             worker.RunWorkerCompleted += UserRequestWork_RunWorkerCompleted;
                             worker.WorkerSupportsCancellation = true;
-                            worker.RunWorkerAsync(new Tuple<ICommand<ICommandContext<IRequestToken>, IUserRequestInfo>,
-                            ICommandContext<IRequestToken>, IUserRequestInfo>(command,pair.Item1,pair.Item2));
+                            worker.RunWorkerAsync(new Tuple<ICommand<BaseCommandContext<IRequestToken>, IUserRequestInfo>,
+                            BaseCommandContext<IRequestToken>, IUserRequestInfo>(command, pair.Item1, pair.Item2));
 
                             lock(_synWorkLock)
                             {
@@ -217,7 +216,7 @@ namespace TaobaoCrawler
         /// <param name="context"></param>
         /// <param name="request"></param>
         /// <param name="callback"></param>
-        public virtual IRequestToken BeginOnWork(ICommandContext<IRequestToken> context, IUserRequestInfo request, Action<ICommandContext<IRequestToken>> callback)
+        public virtual IRequestToken BeginOnWork(BaseCommandContext<IRequestToken> context, IUserRequestInfo request, Action<BaseCommandContext<IRequestToken>> callback)
         {
             return null;
         }
@@ -231,11 +230,15 @@ namespace TaobaoCrawler
 
         }
 
-        protected IEnumerable<ICommand<ICommandContext<IRequestToken>, IUserRequestInfo>> GetInitCommands()
+        protected IEnumerable<ICommand<BaseCommandContext<IRequestToken>, IUserRequestInfo>> GetInitCommands()
         {
-            IEnumerable<ICommand<ICommandContext<IRequestToken>, IUserRequestInfo>> commands =
-                Modules.Modules.CRAWLERModule.GetInitCommands().OfType<ICommand<ICommandContext<IRequestToken>, IUserRequestInfo>>();
-            return commands;
+            IEnumerable<ICommand> commands = Modules.Modules.CRAWLERModule.GetInitCommands();
+            List<ICommand>  lstCmds = commands.ToList<ICommand>();
+            ICommand<BaseCommandContext<IRequestToken>, IUserRequestInfo> cmd =
+                lstCmds[0] as ICommand<BaseCommandContext<IRequestToken>, IUserRequestInfo>;
+            IEnumerable<ICommand<BaseCommandContext<IRequestToken>, IUserRequestInfo>> cmds =
+                commands.OfType<ICommand<BaseCommandContext<IRequestToken>, IUserRequestInfo>>();
+            return cmds;
         }
 
         #region 事件
@@ -316,13 +319,13 @@ namespace TaobaoCrawler
 
     public class OnWorkEventArgs : EventArgs
     {
-        public  OnWorkEventArgs(ICommandContext<IRequestToken> context,IUserRequestInfo req)
+        public OnWorkEventArgs(BaseCommandContext<IRequestToken> context, IUserRequestInfo req)
         {
             Context = context;
             UserRequest = req;
         }
 
-        public ICommandContext<IRequestToken> Context
+        public BaseCommandContext<IRequestToken> Context
         {
             private set;
             get;

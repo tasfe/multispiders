@@ -9,7 +9,8 @@ namespace TaobaoCrawler
     /// <summary>
     /// 命令上下文
     /// </summary>
-    public class BaseCommandContext : ICommandContext<IRequestToken>
+    public abstract class BaseCommandContext<TToken> : ICommandContext<TToken>
+        where TToken:IRequestToken
     {
         public BaseCommandContext(string requestId)
         {
@@ -19,7 +20,7 @@ namespace TaobaoCrawler
         /// <summary>
         /// 采集命令标识
         /// </summary>
-        public IRequestToken Token { get; set; }
+        public TToken Token { get; set; }
 
         /// <summary>
         /// 请求标识
