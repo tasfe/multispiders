@@ -7,8 +7,8 @@
     <ProjectGuid>{275A662D-1A2C-4FF6-9FD6-ACC2E8FACA47}</ProjectGuid>
     <OutputType>Exe</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>taobaocrawler</RootNamespace>
-    <AssemblyName>taobaocrawler</AssemblyName>
+    <RootNamespace>TaobaoCrawler</RootNamespace>
+    <AssemblyName>TaobaoCrawler</AssemblyName>
     <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
   </PropertyGroup>
@@ -41,18 +41,37 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="BaseModule.cs" />
-    <Compile Include="ICommand.cs" />
-    <Compile Include="ICrawlable.cs" />
-    <Compile Include="IModule.cs" />
-    <Compile Include="Modules\CrawlerModule.cs" />
+    <Compile Include="Core\BaseAsyEngineArg.cs" />
+    <Compile Include="Core\BaseCommandContext.cs" />
+    <Compile Include="Core\BaseModule.cs" />
+    <Compile Include="Core\CrawlerEngineMulti.cs" />
+    <Compile Include="Core\IAsyCrawlerEngine.cs" />
+    <Compile Include="Core\ICommand.cs" />
+    <Compile Include="Core\ICommandContext.cs" />
+    <Compile Include="Core\ICrawlerEngine.cs" />
+    <Compile Include="Core\IdManager.cs" />
+    <Compile Include="Core\IModule.cs" />
+    <Compile Include="Core\IRequestToken.cs" />
+    <Compile Include="Core\IUserRequestInfo.cs" />
+    <Compile Include="Core\RequestToken.cs" />
+    <Compile Include="Core\SetupConfigArg.cs" />
+    <Compile Include="Modules\Crawler\CrawlerModule.cs" />
+    <Compile Include="Modules\Resources\ResourcesModule.cs" />
+    <Compile Include="Modules\TaoBao\Commands\UserInformationCmdArg.cs" />
+    <Compile Include="Modules\TaoBao\Commands\UserInformationCommand.cs" />
+    <Compile Include="Modules\TaoBao\TaoBaoModule.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <ProjectReference Include="..\crawler.engine\Crawler.Engine.csproj">
+      <Project>{9059109d-0794-4b52-8a76-d7bad4b32895}</Project>
+      <Name>Crawler.Engine</Name>
+    </ProjectReference>
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

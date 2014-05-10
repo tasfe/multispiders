@@ -4,9 +4,12 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace taobaocrawler
+namespace TaobaoCrawler
 {
-    public interface ICommand
+    /// <summary>
+    /// 引擎启动配置参数
+    /// </summary>
+    public class SetupConfigArg
     {
 
     }
