@@ -7,8 +7,8 @@
     <ProjectGuid>{8733D93C-6D9B-47CF-8D6B-51D970FD3AEC}</ProjectGuid>
     <OutputType>Exe</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>crawler.test</RootNamespace>
-    <AssemblyName>crawler.test</AssemblyName>
+    <RootNamespace>Crawler.Test</RootNamespace>
+    <AssemblyName>Crawler.Test</AssemblyName>
     <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
   </PropertyGroup>
@@ -46,6 +46,12 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\crawler.engine\Crawler.Engine.csproj">
+      <Project>{9059109d-0794-4b52-8a76-d7bad4b32895}</Project>
+      <Name>Crawler.Engine</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
