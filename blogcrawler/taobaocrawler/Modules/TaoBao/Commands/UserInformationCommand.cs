@@ -9,9 +9,9 @@ using System.Threading;
 
 namespace TaobaoCrawler.Modules.TaoBao
 {
-    public class UserInformationCommand:ICommand<BaseCommandContext,UserInformationCmdArg>
+    public class UserInformationCommand : ICommand<BaseCommandContext<IRequestToken>, UserInformationCmdArg>
     {
-        public void ExecuteEntityCommand(BaseCommandContext context, UserInformationCmdArg requestInfo)
+        public void ExecuteEntityCommand(BaseCommandContext<IRequestToken> context, UserInformationCmdArg requestInfo)
         {
             ConsoleExt.WriteLine("抓取淘宝数据开始...");
 

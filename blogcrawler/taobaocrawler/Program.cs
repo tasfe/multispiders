@@ -21,8 +21,8 @@ namespace TaobaoCrawler
             //根据配置读取要采集的请求
             List<string> urls = new List<string>();
             urls.Add("http://shop70731012.taobao.com");
-            urls.Add("http://shop104138582.taobao.com");
-            urls.Add("http://xwygg.taobao.com");
+            //urls.Add("http://shop104138582.taobao.com");
+            //urls.Add("http://xwygg.taobao.com");
 
             //开始采集
             foreach(string url in urls)
@@ -33,7 +33,7 @@ namespace TaobaoCrawler
             foreach(string url in urls)
             {
                 CrawlerEngineMulti.Hinstance.OnWork(
-                    new BaseCommandContext(0x10010001.ToString()), new UserInformationCmdArg() { ShopUrl=url});
+                    new CommandContext(0x10010001.ToString()), new UserInformationCmdArg() { ShopUrl=url});
             }
 
             ConsoleExt.WriteLine("采集中,请等待采集结束...");

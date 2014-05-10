@@ -41,6 +41,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Core\CommandContext.cs" />
     <Compile Include="Core\BaseAsyEngineArg.cs" />
     <Compile Include="Core\BaseCommandContext.cs" />
     <Compile Include="Core\BaseModule.cs" />
